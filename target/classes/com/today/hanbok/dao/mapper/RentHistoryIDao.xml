@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.today.hanbok.dao.rentHistoryIDao">
+
+	<sql id="includeCount">
+	<choose>
+		<when test="param2=='all'">
+			AND odr_num LIKE '%'||#{param1}||'%' or HBA_INFO LIKE '%'||#{param1}||'%'
+		</when>
+		<when test="param2=='hba_info'">
+			AND HBA_INFO LIKE '%'||#{param1}||'%'
+		</when>
+ 		<when test="param2=='odr_num'">
+			AND odr_num LIKE '%'||#{param1}||'%'
+		</when>
+  		<when test="param5 == 'rt_date'">
+			AND RT_DATE BETWEEN TO_DATE(#{param3}, 'YYYY.MM.DD') AND TO_DATE(#{param4}, 'YYYY.MM.DD') + 0.99999
+		</when>
+ 		<when test="param5=='' and param3 !='' and param4!=''">
+			AND RT_DATE BETWEEN TO_DATE(#{param3}, 'YYYY.MM.DD') AND TO_DATE(#{param4}, 'YYYY.MM.DD') + 0.99999
+		</when>
+ 		<when test="param7 =='state'">
+			AND ODR_STATUS = #{param6}
+		</when>
+
+		<otherwise>
+		
+		
+		</otherwise>
+	</choose>
+	</sql>
+	
+	
+	<sql id="includeList">
+	<choose>
+		<when test="param4=='all'">
+			AND odr_num LIKE '%'||#{param3}||'%' or HBA_INFO LIKE '%'||#{param3}||'%'
+		</when>
+		<when test="param4=='hba_info'">
+			AND HBA_INFO LIKE '%'||#{param3}||'%'
+		</when>
+		<when test="param4=='odr_num'">
+			AND odr_num LIKE '%'||#{param3}||'%'
+		</when>
+ 		<when test="param7=='rt_date'">
+			AND RT_DATE BETWEEN TO_DATE(#{param5}, 'YYYY.MM.DD') AND TO_DATE(#{param6}, 'YYYY.MM.DD') + 0.99999
+		</when>
+ 		<when test="param7=='' and param5!='' and param6!=''">
+			AND RT_DATE BETWEEN TO_DATE(#{param5}, 'YYYY.MM.DD') AND TO_DATE(#{param6}, 'YYYY.MM.DD') + 0.99999
+		</when>
+ 		<when test="param9 =='state'">
+			AND ODR_STATUS = #{param8}
+		</when>
+
+		<otherwise>
+		
+		</otherwise>
+	</choose>
+	</sql>
+
+  	<select id="rentHistory" resultType="com.today.hanbok.dto.orderDto"> 
+		SELECT ODR_NUM,ODR_FINALPAY,ODR_STATUS,TO_DATE(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,HBA_PRICE,TO_DATE(RT_RENTDATE,'YYYY.MM.DD') AS "RT_RENTDATE",BK_AMOUNT FROM
+		(SELECT ODR_NUM,ODR_FINALPAY,ODR_STATUS,TO_CHAR(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,BK_AMOUNT,
+		HBA_PRICE,TO_CHAR(RT_RENTDATE, 'YYYY.MM.DD') AS "RT_RENTDATE",
+		ROW_NUMBER() OVER(ORDER BY RT_DATE DESC) N FROM HB_ORDER INNER JOIN BASKET_SHADOW
+		ON HB_ORDER.ODR_NUM=BASKET_SHADOW.SDW_NUM
+		where hb_order.mem_id= #{param10}
+		<include refid="includeList" />
+		)
+        WHERE N BETWEEN #{param1} AND #{param2}
+
+	</select>
+	
+	
+		<select id="selectBoardTotCount" resultType="Integer">
+		SELECT COUNT(*) FROM HB_ORDER INNER JOIN BASKET_SHADOW 
+		ON HB_ORDER.ODR_NUM=BASKET_SHADOW.SDW_NUM 
+		where hb_order.mem_id= #{param8}
+		<include refid="includeCount" />		
+	</select>
+	
+
+	<select id="rentCancel" resultType="com.today.hanbok.dto.orderDto">
+		SELECT ODR_NUM,ODR_FINALPAY,ODR_STATUS,TO_DATE(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,HBA_PRICE,RT_RENTDATE,BK_AMOUNT
+		FROM HB_ORDER INNER JOIN BASKET_SHADOW ON HB_ORDER.ODR_NUM=BASKET_SHADOW.SDW_NUM WHERE ODR_NUM=#{param1}
+	</select>
+	
+	<update id="cg_state">
+		UPDATE HB_ORDER SET ODR_STATUS='취소요청' WHERE ODR_NUM=#{param1}
+	</update>
+	
+	<insert id="cancel">
+		INSERT INTO REFUND VALUES(#{param2},#{param1},#{param4},#{param3},sysdate)
+	</insert>
+	
+	<select id="rentHistory_view" resultType="com.today.hanbok.dto.orderDto"> 
+	SELECT ODR_NUM,ODR_NAME,ODR_POSTNUM,ODR_ADDR,ODR_CELL,ODR_EMAIL,ODR_REQUEST,ODR_USEDPOINT,ODR_FINALPAY,ODR_GETPOINT,ODR_STATUS,TO_DATE(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,HBA_PRICE,RT_RENTDATE,BK_AMOUNT
+	FROM HB_ORDER INNER JOIN BASKET_SHADOW
+	ON HB_ORDER.ODR_NUM=BASKET_SHADOW.SDW_NUM
+	WHERE ODR_NUM=#{param1}
+	</select>
+	
+
+</mapper>

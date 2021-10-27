@@ -1,0 +1,143 @@
+
+    .content{
+    width:80%;
+	margin:auto;
+	padding-top:200px;
+	display: flex;
+	    max-width: 1460px;
+	}
+
+.left{
+	text-align: center;
+	width:55%
+}
+.right{
+	width:45%
+}
+.btn01 {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    width: 39%;
+}
+.btn01 {
+    display: inline-block;
+    padding: 0 7px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #aaa;
+    color: #fff;
+    background: #733b90;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.btn02 {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    width: 39%;
+}
+.btn02 {
+    display: inline-block;
+    padding: 0 7px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #aaa;
+    color: #333;
+    background: #fff;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+#productname{
+    margin: 15px 0 20px;
+    font-size: 20px;
+    color: #454545;
+}
+
+.font-size-14 {
+    font-size: 14px;
+    padding:15px
+}
+.grid-item-p {
+    font-size: 14px;
+    color: #5a5b5e;
+    margin: 0 0 25px;
+    line-height: 14px;
+        border: 1px rgba(150,150,150,.2) solid;
+    border-left: 0;
+    border-right: 0;
+    padding: 20px 10px;
+    width:100%;
+    font-weight: 500;
+}
+
+
+.grid-item-p td {
+	padding:15px
+}
+.grid-item-p .fst {
+	padding-top:30px
+}
+.grid-item-p .last {
+	padding-bottom:30px
+}
+
+input[type=text],select,input[type=number]{
+    height: 27px;
+    line-height: 27px;
+    padding: 2px 4px;
+    border: 1px solid #d5d5d5;
+    color: #353535;
+    vertical-align: middle;
+    border-radius: 3px;
+    width:100%;
+}
+
+input::placeholder {color:#ccc;}
+
+.grid-item-p2 td {
+    padding: 20px 15px 30px 15px;
+    font-size: 18px;
+    color: #454545;
+}
+
+#amount_box{
+    width: 40px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-left: 0px;
+    border-right: 0px;
+    vertical-align: bottom;
+    border-radius: 0;
+}
+
+.m_button {
+    display: inline-block;
+    width: 18px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-left: 0px;
+    background-color: #fff;
+    cursor: pointer;
+    margin-left: -5px;
+    padding: 0;
+}
+.p_button {
+    display: inline-block;
+    width: 18px;
+    height: 27px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-right: 0px;
+    background-color: #fff;
+    cursor: pointer;
+    margin-right: -5px;
+    padding: 0;
+}
+
+.inp_b{
+	border:none;
+}

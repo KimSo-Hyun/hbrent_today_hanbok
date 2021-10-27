@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.today.hanbok.dao.HbIDao">
+
+
+   	<sql id="includeCount">
+	<choose>
+		 <when test="param2==1">
+			WHERE HBA_INFO LIKE '%'||#{param1}||'%'  
+		</when>
+		<when test="param2==2">
+			WHERE HBA_PRICE LIKE '%'||#{param1}||'%'
+		</when>
+		<when test="param2==3">
+			WHERE HBA_INFO LIKE '%'||#{param1}||'%' or HBA_PRICE LIKE '%'||#{param1}||'%'
+		</when>
+		
+		<when test="param2==4">
+			WHERE HBA_PRICE IS NOT NULL
+		</when>
+		
+		<otherwise>
+		
+		</otherwise>
+	</choose>
+	</sql>
+		
+	<sql id="includeList">
+	<choose>
+		<when test="param4==1">
+			WHERE HBA_INFO LIKE '%'||#{param3}||'%'
+		</when>
+		<when test="param4==2">
+			WHERE HBA_PRICE LIKE '%'||#{param3}||'%'
+		</when>
+		<when test="param4==3">
+			WHERE HBA_INFO LIKE '%'||#{param3}||'%' or HBA_PRICE LIKE '%'||#{param3}||'%'
+		</when>
+		<otherwise>
+		
+		</otherwise>
+	</choose>
+	</sql>
+    
+    
+	<select id="hba" resultType="com.today.hanbok.dto.HbDto">
+		 SELECT HBA_NUM,HBA_ID,HBA_INFO,HBA_SIZE,HBA_GENDER,HBA_PRICE,HBA_STOCK,HBA_IMG FROM
+		(SELECT HBA_NUM,HBA_ID,HBA_INFO,HBA_SIZE,HBA_GENDER,HBA_PRICE,HBA_STOCK,HBA_IMG, ROW_NUMBER()
+		OVER(ORDER BY HBA_NUM DESC) N FROM HBALL
+		<!-- <include refid="includeList" /> -->
+		)
+		WHERE N BETWEEN #{param1} AND #{param2}
+	</select>	
+	
+	<select id="selectBoardTotCount" resultType="Integer"> 
+		SELECT COUNT(*) FROM HBALL
+		<!-- <include refid="includeCount" />  -->
+	</select>
+	
+		 <select id="hba_detail" resultType="com.today.hanbok.dto.HbDto"> 
+		SELECT * FROM  HBALL WHERE HBA_NUM=#{HBA_NUM}
+	</select> 
+	
+	 <insert id="hba_add">   
+		INSERT INTO HBALL(HBA_NUM,HBA_ID,HBA_INFO,HBA_SIZE,HBA_GENDER,HBA_PRICE,HBA_STOCK,HBA_IMG) 
+		VALUES(HBALL_SEQ.NEXTVAL,#{param1}||DECODE(#{param3},'66','S','90','S','77','M','95','M','88','L','100','L','null'),
+		#{param1},#{param3},#{param5},#{param2},#{param4},#{param6})
+	 </insert>
+	 
+
+
+	
+	<delete id="hba_delete">
+		DELETE FROM HBALL WHERE HBA_NUM=#{param1}
+	</delete>
+
+	
+
+</mapper>

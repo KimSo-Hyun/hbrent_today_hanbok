@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.today.hanbok.dao.OrderIDao">
+
+	<select id="send_basket" resultType="com.today.hanbok.dto.basketDto"> 
+		SELECT BK_NUM,MEM_ID,HBA_ID,BK_AMOUNT,HBA_INFO,HBA_PRICE,HBA_IMG,HBA_STOCK,HBA_SIZE,TO_CHAR(RT_RENTDATE, 'YYYY.MM.DD') as "RT_RENTDATE"
+		FROM BASKET WHERE BK_NUM=#{param1}		 
+	</select>
+	
+	<select id="send_meminfo" resultType="com.today.hanbok.dto.MemberDto"> 
+		SELECT * FROM HBRENT_MEMBER WHERE MEM_ID=#{param1}		 
+	</select>
+	
+
+	<insert id="orderproc" > 
+		INSERT INTO HB_ORDER VALUES(
+				hb_order_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},
+				#{param7},#{param8},#{param9},#{param10},'입금확인중',#{param11},sysdate,#{param12}
+		)		
+	</insert>
+	
+	<select id="load_basket_info" resultType="com.today.hanbok.dto.basketDto"> 
+		SELECT * FROM BASKET WHERE BK_NUM=#{param1}		 
+	</select>
+	
+	
+	<insert id="to_basket_shadow" > 
+		INSERT INTO BASKET_SHADOW VALUES(basket_shadowr_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},TO_DATE(#{param10},'YYYY-MM-DD hh24:mi:ss'))	
+	</insert>
+	
+	
+	<delete id="delete_Basket" > 
+		DELETE FROM BASKET WHERE BK_NUM =#{param1}
+	</delete>	
+	
+	
+	<select id="check_hba_stock" resultType="integer"> 
+		SELECT * FROM HBALL WHERE HBA_ID=#{param1}		 
+	</select>
+	
+	
+	
+	<select id="load_basketshadow_info" resultType="com.today.hanbok.dto.basketShadowDto"> 
+		SELECT * FROM BASKET_SHADOW WHERE BK_NUM=#{param1}		 
+	</select>
+	
+	
+	<update id="reduce_hba_stock" > 
+		UPDATE HBALL SET HBA_STOCK= HBA_STOCK-#{param2}  WHERE HBA_ID=#{param1}
+	</update>
+	
+	<update id="orderproc_adjustpoint" > 
+		UPDATE HBRENT_MEMBER SET MEM_POINT=MEM_POINT-#{param2}  WHERE MEM_ID=#{param1}
+	</update>
+
+
+</mapper>

@@ -83,7 +83,7 @@
 		<include refid="includeCount" />		
 	</select>
 	
-
+	<!-- 취소페이지 -->
 	<select id="rentCancel" resultType="com.today.hanbok.dto.orderDto">
 		SELECT ODR_NUM,ODR_FINALPAY,ODR_STATUS,TO_DATE(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,HBA_PRICE,RT_RENTDATE,BK_AMOUNT
 		FROM HB_ORDER INNER JOIN BASKET_SHADOW ON HB_ORDER.ODR_NUM=BASKET_SHADOW.SDW_NUM WHERE ODR_NUM=#{param1}
@@ -97,6 +97,7 @@
 		INSERT INTO REFUND VALUES(#{param2},#{param1},#{param4},#{param3},sysdate)
 	</insert>
 	
+	<!-- 상세페이지 -->
 	<select id="rentHistory_view" resultType="com.today.hanbok.dto.orderDto"> 
 	SELECT ODR_NUM,ODR_NAME,ODR_POSTNUM,ODR_ADDR,ODR_CELL,ODR_EMAIL,ODR_REQUEST,ODR_USEDPOINT,ODR_FINALPAY,ODR_GETPOINT,ODR_STATUS,TO_DATE(RT_DATE, 'YYYY.MM.DD') AS "RT_DATE",HBA_INFO,HBA_IMG,HBA_SIZE,HBA_PRICE,RT_RENTDATE,BK_AMOUNT
 	FROM HB_ORDER INNER JOIN BASKET_SHADOW

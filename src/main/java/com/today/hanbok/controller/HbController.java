@@ -60,36 +60,25 @@ public JdbcTemplate template;
 		}
 		String searchKeyword=request.getParameter("sk");
 		
-		if (searchKeyword == null) {
-			
-			searchKeyword="";
-			
+		if (searchKeyword == null) {			
+			searchKeyword="";			
 		}
 			String strPage=request.getParameter("page");
-			
-		
-		
 		
 		HbIDao dao=sqlSession.getMapper(HbIDao.class);
 		
 		if (strPage==null || strPage.equals("")) {
 			strPage="1";
 		}
-		
-		
+				
 
 		int page = Integer.parseInt(strPage);
 		SearchVO.setPage(page);
 		
-		
-		
-		
 		System.out.println("=========================");
 		System.out.println("strPage: "+strPage);
 		System.out.println("=========================");
-		
-		
-		
+				
 		//TotCnt
 		
 		int total=0;
@@ -111,10 +100,6 @@ public JdbcTemplate template;
 			System.out.println("c"+dao.selectBoardTotCount(searchKeyword,"0"));
 			System.out.println("list0~~~~~~~~~~~~");
 		}
-		
-		
-		
-		
 		
 		
 		System.out.println("c"+total);
@@ -166,12 +151,8 @@ public JdbcTemplate template;
 		System.out.println("hb_detail");
 		
 		String hba_num=request.getParameter("hba_num");
-		
-		
-		
-		
-		HbIDao dao=sqlSession.getMapper(HbIDao.class);
-		
+
+		HbIDao dao=sqlSession.getMapper(HbIDao.class);	
 		HbDto dto=dao.hba_detail(hba_num);
 		
 		model.addAttribute("hba_detail",dto);
@@ -179,26 +160,20 @@ public JdbcTemplate template;
 		return "product/hb_detail";
 		
 	}
-	
 
 	
 	@RequestMapping("/hba_add_view")
 	public String hba_add_view() {
 		
 		System.out.println("hba_add_view()");
-		
-		
-		
+	
 		return "product/hba_add_view";
 	}
 	
 	
-	
 	@RequestMapping("/hba_add")
 	public String hba_add(HttpServletRequest request, Model model) throws Exception {
-		System.out.println("=========================");
 		System.out.println("hba_add");
-		System.out.println("=========================");
 		
 		String path= "F:\\springSet\\springwork\\hbrent_today_hanbok\\src\\main\\webapp\\resources\\upload";		
 		MultipartRequest req=

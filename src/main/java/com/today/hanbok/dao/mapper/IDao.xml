@@ -6,7 +6,6 @@
 
 <mapper namespace="com.today.hanbok.dao.IDao">
 
-
 	<select id="mainhome" resultType="com.today.hanbok.dto.HbDto"> 
 		SELECT HBA_NUM, HBA_ID, HBA_INFO, HBA_PRICE, HBA_IMG FROM 
         		(SELECT HBA_NUM, HBA_ID, HBA_INFO, HBA_PRICE, HBA_IMG, ROW_NUMBER() OVER(ORDER BY HBA_NUM DESC) N  FROM HBALL WHERE HBA_ID LIKE '%S%')

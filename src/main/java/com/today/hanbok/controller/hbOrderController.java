@@ -151,20 +151,16 @@ public class hbOrderController {
 						
 					}
 				}
+							
 				
-				
-				
-				//여기 부분 수정
+				//주문 table에 insert
 				String hba_id[] =request.getParameterValues("hba_id");
 
-				//mybatits에서 작업
-//				IDao dao=sqlSession.getMapper(IDao.class);
 				for (int i = 0; i < hba_id.length; i++) {
 					System.out.println("hba_id: "+hba_id[i]);
 					
 					if (hba_id.length >=1) {
-						
-						
+
 						dao.orderproc(odr_name,odr_postnum,odr_addr,odr_cell,odr_email,
 								odr_request,odr_usedpoint,odr_finalpay,odr_getpoint,bk_numall,mem_id,hba_id[i]);
 						
@@ -179,8 +175,6 @@ public class hbOrderController {
 						odr_getpoint=0;
 					}
 				}
-				
-				//여기까지
 			
 				
 				//기존장바구니 정보 ->basket_shadow 테이블로 복사 하고 -> 기존 bsket 테이블에서는 삭제

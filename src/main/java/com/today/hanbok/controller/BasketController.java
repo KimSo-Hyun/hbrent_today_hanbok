@@ -38,7 +38,7 @@ public class BasketController {
 		String mem_id = request.getParameter("logined_mem_id");
 		System.out.println("mem_id : "+mem_id);
 		
-
+		//로그인이 안되있으면 로그인창으로 보내줌
 		if(mem_id == "") {
 			return "redirect:loginForm";
 		}
@@ -76,18 +76,19 @@ public class BasketController {
 	public String basket(HttpServletRequest request,Model model) throws Exception{
 		System.out.println("pass by basket()");
 		
-		
-		
+		//해당 session id를 가져옴
 		HttpSession session = request.getSession();
 		String mem_id=(String)session.getAttribute("logined_mem_id");
-		System.out.println("mem_id :" + mem_id); 
+		System.out.println("mem_id :" + mem_id);
 		
+		//재고
 		String oder_err_msg =request.getParameter("oder_err_msg");
 		System.out.println("oder_err_msg:"+oder_err_msg);
 		model.addAttribute("oder_err_msg",oder_err_msg);
 				
 		Map<String, Object> map=new HashMap<String, Object>();
-
+		
+		//로그인이 되어있으면
 		 if(mem_id!= null) { 
 		BasketIDao dao=sqlSession.getMapper(BasketIDao.class);
 		List<basketDto> list= new ArrayList<basketDto>();
@@ -109,6 +110,7 @@ public class BasketController {
      }
 	}
 	
+	//선택된 상품 삭제
 	@RequestMapping("/deleteCart")
 	public String deleteCart(HttpServletRequest request,Model model) {
 		System.out.println("pass by deleteCart()");
@@ -117,7 +119,8 @@ public class BasketController {
 		
 		String bk_num=request.getParameter("checkArr");		
 		String[] array=bk_num.split(",");
-					
+				
+		//여러개의 선택된 상품 num를 보내줌
 		for (int i = 0; i < array.length; i++) {
 			System.out.println("bk_num : "+array[i]);
 			dao.deleteCart(array[i]);
@@ -126,6 +129,7 @@ public class BasketController {
 		return "redirect:basket";
 	}
 	
+	//해당 mem_id에 들어있는 상품을 전체 삭제함
 	@RequestMapping("/deleteAll")
 	public String deleteAll(HttpServletRequest request,Model model) {
 		System.out.println("pass by deleteAll()");
@@ -160,6 +164,7 @@ public class BasketController {
 		
 		System.out.println(bk_amount);
 		
+		//수량이 1개이하로 떨어지지 않게함
 		if(Integer.parseInt(bk_amount) > 1) {		
 			BasketIDao dao=sqlSession.getMapper(BasketIDao.class);				
 			dao.amountDown(bk_num);
